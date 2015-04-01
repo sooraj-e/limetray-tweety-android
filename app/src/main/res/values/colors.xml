@@ -28,4 +28,8 @@
     <color name="holo_green_dark">#669900</color>
     <color name="holo_purple_dark">#9933cc</color>
     <color name="holo_red_dark">#cc0000</color>
+
+    <color name="black_trans">#be030303</color>
+    <color name="gradient_start">#32030303</color>
+    <color name="gradient_end">#0f030303</color>
 </resources>

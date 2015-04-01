@@ -7,12 +7,12 @@ import android.database.sqlite.SQLiteOpenHelper;
 /**
  * Created by blackadmin on 25/11/14.
  */
-public class MySQLiteHelper extends SQLiteOpenHelper {
+class MySQLiteHelper extends SQLiteOpenHelper {
     private static final String DB_NAME = "db_tweety";
     private static final int DB_VERSION = 1;
 
     // Below is the table for list of connected controllers.
-    public static interface TableTweets{
+    static interface TableTweets{
         public static final String TABLE_TWEETS = "tbl_tweets";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TWEET_JSON = "tweet_json";
@@ -23,7 +23,7 @@ public class MySQLiteHelper extends SQLiteOpenHelper {
                 + COLUMN_TWEET_JSON + " TEXT NOT NULL);";
     }
 
-    public MySQLiteHelper(Context context){
+    MySQLiteHelper(Context context){
         super(context, DB_NAME, null, DB_VERSION);
     }
 

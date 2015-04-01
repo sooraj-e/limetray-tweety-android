@@ -3,9 +3,7 @@ package com.app.android.limetray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -14,32 +12,70 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.app.android.limetray.api.TweetManager;
+import com.twitter.sdk.android.core.TwitterException;
 
 
 public class MainActivity extends ActionBarActivity {
-    private FragmentManager fragmentManager = null;
-    private ViewPager tabsViewPager;
-    private ActionBar actionBar;
-    private ViewPagerAdapter viewPagerAdapter;
+    private ViewPager tabsViewPager = null;
+    private ViewPagerAdapter viewPagerAdapter = null;
+    private TweetManager tweetManager = null;
+
+    private static final String TAG = MainActivity.class.getName();
+
+    // TODO Check internet connection
+    // TODO Orientation change
+    // TODO Logo design
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
-            getSupportActionBar().setElevation(0);
-        }
+        tweetManager = TweetManager.getInstance(this);
 
-        if (savedInstanceState == null) {
+        if(!tweetManager.isGuestLogin()){
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.layout_loading);
+
+            loginTwitter();
+        }else{
+            removeActionBarShadow();
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.activity_main);
             createTabs();
         }
-
-        TweetManager.getInstance(this).loginAsGuest();
-
-
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+        this.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+    }
+
+    private void loginTwitter(){
+        tweetManager.setLoginCallbackListener(loginCallbackListener);
+        tweetManager.loginAsGuest();
+    }
+
+    private TweetManager.LoginCallbackListener loginCallbackListener = new TweetManager.LoginCallbackListener() {
+        @Override
+        public void onLoginSuccess() {
+            recreate();
+        }
+
+        @Override
+        public void onLoginFailure(TwitterException ex) {
+            ex.printStackTrace();
+            //Log.e(TAG, "ex");
+        }
+    };
+
+
+    private void removeActionBarShadow(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            getSupportActionBar().setElevation(0);
+        }else{
+            setTheme(R.style.NoShadowActionBarTheme);
+        }
+    }
 
     private void createTabs() {
         tabsViewPager = (ViewPager) findViewById(R.id.pager);

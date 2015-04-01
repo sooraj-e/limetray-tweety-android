@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
 
         <!-- Remove actionbar shadow -->
-        <item name="android:windowContentOverlay">@null</item>
+        <!-- <item name="android:windowContentOverlay">@null</item> -->
 
 
         <item name="colorPrimary">@color/actionbar_green_dark_primary</item>
@@ -17,6 +17,11 @@
         <!-- colorAccent is used as the default value for
              colorControlActivated which is used to tint widgets. -->
         <item name="colorAccent">@color/actionbar_green_dark_primary</item>
+    </style>
+
+    <!-- Theme without ActionBar shadow (inherits main theme) -->
+    <style name="NoShadowActionBarTheme" parent="AppTheme">
+        <item name="android:windowContentOverlay">@null</item>
     </style>
 
 </resources>
