@@ -12,7 +12,7 @@
 
         <!-- colorPrimaryDark is used for the status bar (with the
              battery, clock, etc). -->
-        <item name="colorPrimaryDark">@color/actionbar_green_dark_primary</item>
+        <item name="colorPrimaryDark">@color/actionbar_green_dark_status</item>
 
         <!-- colorAccent is used as the default value for
              colorControlActivated which is used to tint widgets. -->

@@ -14,6 +14,7 @@
     <color name="blue_light_transparent">#185677fc</color>
 
     <color name="actionbar_green_dark_primary" >#669900</color>
+    <color name="actionbar_green_dark_status" >#ff548700</color>
 
     <color name="bg_holo_green_dark">#07669900</color>
     <integer-array name="pbar_colors">
@@ -32,4 +33,13 @@
     <color name="black_trans">#be030303</color>
     <color name="gradient_start">#32030303</color>
     <color name="gradient_end">#0f030303</color>
+
+
+    <color name="red">#FFFF0000</color>
+    <color name="transparent_blue">#800000FF</color>
+    <color name="green">#FF00FF00</color>
+    <color name="green_light">#FF99CC00</color>
+    <color name="orange">#FFFFBB33</color>
+    <color name="transparent_orange">#80FFBB33</color>
+    <color name="purple">#FFAA66CC</color>
 </resources>

@@ -9,7 +9,10 @@ import retrofit.http.Query;
 /**
  * Created by blackadmin on 1/4/15.
  */
-public interface TweetSearchService {
+interface TweetSearchService {
     @GET("/1.1/search/tweets.json")
     void search(@Query("q") String searchString, Callback<Search> callbackTweets);
+
+    @GET("/1.1/search/tweets.json")
+    void search(@Query("q") String searchString, @Query("since_id") long lastTweetId, Callback<Search> callbackTweets);
 }

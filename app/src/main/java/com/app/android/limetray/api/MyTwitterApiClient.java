@@ -6,12 +6,12 @@ import com.twitter.sdk.android.core.TwitterApiClient;
 /**
  * Created by blackadmin on 1/4/15.
  */
-public class MyTwitterApiClient extends TwitterApiClient {
-    public MyTwitterApiClient(Session session) {
+class MyTwitterApiClient extends TwitterApiClient {
+    MyTwitterApiClient(Session session) {
         super(session);
     }
 
-    public TweetSearchService getTweetSearchService() {
+    TweetSearchService getTweetSearchService() {
         return getService(TweetSearchService.class);
     }
 }

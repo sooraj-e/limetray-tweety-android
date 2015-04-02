@@ -32,7 +32,7 @@ public class TweetDataSource {
         mySQLiteHelper.close();
     }
 
-    public boolean addOrUpdateTweet(Tweet tweet) {
+    synchronized public boolean addOrUpdateTweet(Tweet tweet) {
         ContentValues values = new ContentValues();
         values.put(MySQLiteHelper.TableTweets.COLUMN_ID, tweet.id);
         values.put(MySQLiteHelper.TableTweets.COLUMN_TWEET_JSON, new Gson().toJson(tweet));
@@ -55,10 +55,20 @@ public class TweetDataSource {
         return null;
     }
 
+    public Tweet getLastTweet(){
+        Cursor cursor = sqLiteDatabase.query(MySQLiteHelper.TableTweets.TABLE_TWEETS, allColumns,
+                null, null, null, null, MySQLiteHelper.TableTweets.COLUMN_ID + " DESC", String.valueOf(1));
+        if(cursor.moveToFirst()) {
+            Tweet tweet = cursorToTweet(cursor);
+            return tweet;
+        }
+        return null;
+    }
+
     public List<Tweet> getAllTweets() {
         List<Tweet> tweetList = new ArrayList<Tweet>();
         Cursor cursor = sqLiteDatabase.query(MySQLiteHelper.TableTweets.TABLE_TWEETS,
-                allColumns, null, null, null, null, null);
+                allColumns, null, null, null, null, MySQLiteHelper.TableTweets.COLUMN_ID + " ASC");
 
         cursor.moveToFirst();
         while (!cursor.isAfterLast()) {

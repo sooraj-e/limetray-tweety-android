@@ -1,9 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    >
+    android:layout_height="match_parent">
 
     <ImageView
         android:layout_width="wrap_content"
@@ -16,18 +17,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/black_trans"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/layoutTweets"
-        android:orientation="vertical">
-
-    </LinearLayout>
-    </ScrollView>
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         android:layout_width="42dp"
@@ -43,4 +32,15 @@
         app:cpb_max_sweep_angle="300"
         />
 
+    <com.echo.holographlibrary.LineGraph
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/graphTweets"
+        app:lineStrokeColor="@color/transparent_orange"
+        app:lineAxisColor="@color/transparent_blue"
+        app:lineStrokeWidth="1dip"
+        app:lineStrokeSpacing="10dip"
+        app:lineUseDip="true"
+        android:visibility="gone"
+        />
 </RelativeLayout>
