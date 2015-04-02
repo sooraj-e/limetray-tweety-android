@@ -2,6 +2,8 @@ package com.app.android.limetray.api;
 
 import android.content.Context;
 
+import com.app.android.limetray.BuildConfig;
+import com.app.android.limetray.Util;
 import com.app.android.limetray.db.TweetDataSource;
 import com.twitter.sdk.android.Twitter;
 import com.twitter.sdk.android.core.AppSession;
@@ -33,9 +35,8 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
     private TweetUpdateTimer tweetUpdateTimer = null;
     private AppSession appSession = null;
 
-    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
-    private static final String TWITTER_KEY = "rQPwbY0s2BVgcW5xCxs5wHw7w";
-    private static final String TWITTER_SECRET = "jlhiDxH5C7T2hK8ycumSdBEngTVpHVRpPl8H51AHs1dMA0Gj1E";
+    private static final String TWITTER_KEY = BuildConfig.CONSUMER_KEY;
+    private static final String TWITTER_SECRET = BuildConfig.CONSUMER_SECRET;
 
     private TwitterManager(Context context){
         this.context = context;
@@ -115,9 +116,13 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
         }
     }
 
+    public void closeDb(){
+        tweetDataSource.close();
+    }
+
     @Override
     public void onTick() {
-        if(isGuestLogin()) {
+        if(Util.isInternetAvailable(context) && isGuestLogin()) {
             MyTwitterApiClient myTwitterApiClient = new MyTwitterApiClient(getSession());
 
             Tweet lastTweet = tweetDataSource.getLastTweet();

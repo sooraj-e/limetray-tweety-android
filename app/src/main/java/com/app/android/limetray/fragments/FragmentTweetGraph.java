@@ -139,7 +139,6 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
                 }
 
                 ArrayList<Bar> barList = new ArrayList<Bar>();
-                System.out.println(graphCoordsList.size());
                 for(GraphCoords graphCoords : graphCoordsList){
                     Bar bar = new Bar();
                     bar.setColor(Color.parseColor("#99CC00"));

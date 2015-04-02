@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TableRow;
+import android.widget.Toast;
 
 import com.app.android.limetray.R;
 import com.app.android.limetray.api.TwitterManager;
@@ -27,6 +28,7 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
     private ProgressBar progressBarLoading = null;
     private static final String TWEET_SEARCH_STRING = "limetray";
     private LinearLayout layoutTweets = null;
+    private boolean enableNewTweetToast = false;
 
     private TwitterManager.TweetListener tweetListener = new TwitterManager.TweetListener() {
         @Override
@@ -91,11 +93,15 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
                 if(null != layoutTweets){
                     layoutTweets.addView(tweetView, 0);
 
-                    // Empty line
+                    // Empty view
                     View viewDivider = new View(context);
                     viewDivider.setLayoutParams(new LinearLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, 1));
                     viewDivider.setBackgroundColor(Color.rgb(51, 51, 51));
                     layoutTweets.addView(viewDivider, 1);
+                }
+
+                if(enableNewTweetToast){
+                    Toast.makeText(context, "New Tweet By: " + tweet.user.name, Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -104,6 +110,7 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
     @Override
     public void onStart() {
         super.onStart();
+        enableNewTweetToast = true;
         twitterManager.startTweety(TWEET_SEARCH_STRING);
     }
 
@@ -118,6 +125,7 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
         super.onDetach();
         if(null != twitterManager && null != tweetListener){
             twitterManager.removeTweetListener(tweetListener);
+            twitterManager.closeDb();
         }
     }
 

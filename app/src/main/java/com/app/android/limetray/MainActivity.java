@@ -10,6 +10,7 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.app.android.limetray.api.TwitterManager;
 import com.twitter.sdk.android.core.TwitterException;
@@ -22,26 +23,26 @@ public class MainActivity extends ActionBarActivity {
 
     private static final String TAG = MainActivity.class.getName();
 
-    // TODO Check internet connection
-    // TODO Orientation change
-    // TODO Logo design
-    // TODO Secure keys
-    // TODO Close DB
+    // TODO Check internet connection - Done
+    // TODO Orientation change - Only portrait for now - Done
+    // TODO Logo design - Done
+    // TODO Secure keys - Done
+    // TODO Close DB - Done
     // TODO Tweets latest should be on the top - Done
-    // TODO New Tweet Toast
-    // TODO Make offline working
-    // TODO Observer model inside fragment
+    // TODO New Tweet Toast - Done
+    // TODO Make offline working - Done
+    // TODO Observer model inside fragment - Next Version
 
     private TwitterManager.LoginCallbackListener loginCallbackListener = new TwitterManager.LoginCallbackListener() {
         @Override
         public void onLoginSuccess() {
-            recreate();
+            createViewpager();
         }
 
         @Override
         public void onLoginFailure(TwitterException ex) {
             ex.printStackTrace();
-            //Log.e(TAG, "ex");
+            Toast.makeText(MainActivity.this, "Login Failed, Retry later !!!" , Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -52,16 +53,19 @@ public class MainActivity extends ActionBarActivity {
 
         twitterManager = TwitterManager.getInstance(this);
 
-        if(!twitterManager.isGuestLogin()){
+        if(Util.isInternetAvailable(this) && !twitterManager.isGuestLogin()){
             setContentView(R.layout.layout_loading);
             loginTwitter();
         }else {
-            removeActionBarShadow();
-            setContentView(R.layout.activity_main);
-            createTabs();
+            createViewpager();
         }
     }
 
+    private void createViewpager(){
+        removeActionBarShadow();
+        setContentView(R.layout.activity_main);
+        createTabs();
+    }
     private void setTypeface(){
         SpannableString spannableString = new SpannableString(getString(R.string.app_name));
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Medium.otf");
@@ -78,6 +82,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onResume(){
         super.onResume();
         this.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
+        if(!Util.isInternetAvailable(this)){
+            Toast.makeText(this, "No Internet Conneciton Found !!!", Toast.LENGTH_LONG).show();
+        }
     }
 
     private void loginTwitter(){
@@ -88,9 +95,10 @@ public class MainActivity extends ActionBarActivity {
     private void removeActionBarShadow(){
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
             getSupportActionBar().setElevation(0);
-        }else{
-            setTheme(R.style.NoShadowActionBarTheme);
         }
+//        else{
+//            setTheme(R.style.NoShadowActionBarTheme);
+//        }
     }
 
     private void createTabs() {
