@@ -99,8 +99,7 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
             Date date = dateFormat.parse(createdAt); // parsing the String into a Date using the mask
             Calendar calendar = Calendar.getInstance();
             calendar .setTime(date);
-            createdAt = calendar.get(Calendar.DATE) + " " + calendar.get(Calendar.MONTH) + " " + calendar.get(Calendar.YEAR);
-            System.out.println(createdAt);
+            createdAt = calendar.get(Calendar.DATE) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
         }catch (Exception ex){
             ex.printStackTrace();
         }
@@ -109,18 +108,21 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
         for(GraphCoords graphCoordExists : graphCoordsList){
             if(createdAt.equalsIgnoreCase(graphCoordExists.getCreatedAt())){
                 // updateY
-                graphCoordExists.setY(graphCoordExists.getY() + 2);
+                graphCoordExists.setY(graphCoordExists.getY() + 1);
+                graphCoords = graphCoordExists;
             }
         }
 
         if(null == graphCoords.getCreatedAt()){
             graphCoords.setCreatedAt(createdAt);
-            if(!graphCoordsList.isEmpty()) {
-                graphCoords.setX(graphCoordsList.get(graphCoordsList.size() - 1).getX() + 2);
+            if(!graphCoordsList.isEmpty()) {                //graphCoords.setX(graphCoordsList.get(graphCoordsList.size() - 1).getX() + 2);
+
             }
+            graphCoords.setY(graphCoords.getY() + 1);
+            graphCoordsList.add(graphCoords);
         }
 
-        graphCoordsList.add(graphCoords);
+
 
         updateUI();
 
@@ -137,6 +139,7 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
                 }
 
                 ArrayList<Bar> barList = new ArrayList<Bar>();
+                System.out.println(graphCoordsList.size());
                 for(GraphCoords graphCoords : graphCoordsList){
                     Bar bar = new Bar();
                     bar.setColor(Color.parseColor("#99CC00"));
@@ -174,7 +177,7 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
         private int y;
 
         GraphCoords(){
-            this(null, 0, 1);
+            this(null, 0, 0);
         }
 
         GraphCoords(String createdAt, int x, int y) {
