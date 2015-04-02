@@ -51,7 +51,7 @@ public class CustomTypefaceSpan extends TypefaceSpan {
             paint.setTextSkewX(-0.25f);
         }
 
-        if(0.0F != fontSize) {
+        if (0.0F != fontSize) {
             paint.setTextSize(fontSize);
         }
         paint.setTypeface(tf);

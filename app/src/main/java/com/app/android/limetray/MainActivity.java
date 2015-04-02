@@ -42,7 +42,7 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onLoginFailure(TwitterException ex) {
             ex.printStackTrace();
-            Toast.makeText(MainActivity.this, "Login Failed, Retry later !!!" , Toast.LENGTH_SHORT).show();
+            Toast.makeText(MainActivity.this, "Login Failed, Retry later !!!", Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -53,20 +53,21 @@ public class MainActivity extends ActionBarActivity {
 
         twitterManager = TwitterManager.getInstance(this);
 
-        if(Util.isInternetAvailable(this) && !twitterManager.isGuestLogin()){
+        if (Util.isInternetAvailable(this) && !twitterManager.isGuestLogin()) {
             setContentView(R.layout.layout_loading);
             loginTwitter();
-        }else {
+        } else {
             createViewpager();
         }
     }
 
-    private void createViewpager(){
+    private void createViewpager() {
         removeActionBarShadow();
         setContentView(R.layout.activity_main);
         createTabs();
     }
-    private void setTypeface(){
+
+    private void setTypeface() {
         SpannableString spannableString = new SpannableString(getString(R.string.app_name));
         Typeface typeface = Typeface.createFromAsset(getAssets(), "fonts/Gotham-Medium.otf");
         spannableString.setSpan(new CustomTypefaceSpan("", typeface), 0, spannableString.length(),
@@ -79,21 +80,21 @@ public class MainActivity extends ActionBarActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         this.overridePendingTransition(R.anim.abc_fade_in, R.anim.abc_fade_out);
-        if(!Util.isInternetAvailable(this)){
+        if (!Util.isInternetAvailable(this)) {
             Toast.makeText(this, "No Internet Conneciton Found !!!", Toast.LENGTH_LONG).show();
         }
     }
 
-    private void loginTwitter(){
+    private void loginTwitter() {
         twitterManager.setLoginCallbackListener(loginCallbackListener);
         twitterManager.loginAsGuest();
     }
 
-    private void removeActionBarShadow(){
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+    private void removeActionBarShadow() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             getSupportActionBar().setElevation(0);
         }
 //        else{

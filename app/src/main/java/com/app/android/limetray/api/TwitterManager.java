@@ -25,7 +25,7 @@ import io.fabric.sdk.android.Fabric;
 /**
  * Created by blackadmin on 1/4/15.
  */
-public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener{
+public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener {
     private static TwitterManager _instance = null;
     private Context context = null;
     private TweetDataSource tweetDataSource = null;
@@ -38,7 +38,7 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
     private static final String TWITTER_KEY = BuildConfig.CONSUMER_KEY;
     private static final String TWITTER_SECRET = BuildConfig.CONSUMER_SECRET;
 
-    private TwitterManager(Context context){
+    private TwitterManager(Context context) {
         this.context = context;
         TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
         Fabric.with(this.context, new Twitter(authConfig));
@@ -50,34 +50,34 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
         tweetUpdateTimer = new TweetUpdateTimer();
     }
 
-    public static TwitterManager getInstance(Context context){
-        if(null == _instance) {
+    public static TwitterManager getInstance(Context context) {
+        if (null == _instance) {
             _instance = new TwitterManager(context);
         }
 
         return _instance;
     }
 
-    public void setLoginCallbackListener(LoginCallbackListener loginCallbackListener){
+    public void setLoginCallbackListener(LoginCallbackListener loginCallbackListener) {
         this.loginCallbackListener = loginCallbackListener;
     }
 
-    public void addTweetListener(TweetListener tweetListener){
+    public void addTweetListener(TweetListener tweetListener) {
         this.tweetListenerList.add(tweetListener);
     }
 
-    public void removeTweetListener(TweetListener tweetListener){
+    public void removeTweetListener(TweetListener tweetListener) {
         this.tweetListenerList.remove(tweetListener);
     }
 
-    public List<Tweet> getAllTweets(){
+    public List<Tweet> getAllTweets() {
         return tweetDataSource.getAllTweets();
     }
 
     private Callback callbackLogin = new Callback<AppSession>() {
         @Override
         public void success(Result<AppSession> appSessionResult) {
-            if(null != appSessionResult && null != loginCallbackListener){
+            if (null != appSessionResult && null != loginCallbackListener) {
                 appSession = appSessionResult.data;
                 loginCallbackListener.onLoginSuccess();
             }
@@ -85,13 +85,13 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
 
         @Override
         public void failure(TwitterException ex) {
-            if(null != loginCallbackListener){
+            if (null != loginCallbackListener) {
                 loginCallbackListener.onLoginFailure(ex);
             }
         }
     };
 
-    public boolean isGuestLogin(){
+    public boolean isGuestLogin() {
         return (null != getSession());
     }
 
@@ -99,48 +99,48 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
         TwitterCore.getInstance().logInGuest(callbackLogin);
     }
 
-    public void startTweety(String searchString){
+    public void startTweety(String searchString) {
         setSearchString(searchString);
         tweetUpdateTimer.startTimer(this);
     }
 
-    public void stopTweety(){
+    public void stopTweety() {
         tweetUpdateTimer.stopTimer();
     }
 
     public void setSearchString(String searchString) {
-        try{
+        try {
             this.searchString = URLEncoder.encode(searchString, "UTF-8");
-        }catch (UnsupportedEncodingException ex){
+        } catch (UnsupportedEncodingException ex) {
             ex.printStackTrace();
         }
     }
 
-    public void closeDb(){
+    public void closeDb() {
         tweetDataSource.close();
     }
 
     @Override
     public void onTick() {
-        if(Util.isInternetAvailable(context) && isGuestLogin()) {
+        if (Util.isInternetAvailable(context) && isGuestLogin()) {
             MyTwitterApiClient myTwitterApiClient = new MyTwitterApiClient(getSession());
 
             Tweet lastTweet = tweetDataSource.getLastTweet();
 
             long lastTweetId;
-                if (null != lastTweet) {
-                    lastTweetId = lastTweet.id;
-                    myTwitterApiClient.getTweetSearchService().search(searchString, lastTweetId, callbackTweetSearch);
+            if (null != lastTweet) {
+                lastTweetId = lastTweet.id;
+                myTwitterApiClient.getTweetSearchService().search(searchString, lastTweetId, callbackTweetSearch);
 
-                }else {
-                    // On empty db
-                    myTwitterApiClient.getTweetSearchService().search(searchString, callbackTweetSearch);
-                }
+            } else {
+                // On empty db
+                myTwitterApiClient.getTweetSearchService().search(searchString, callbackTweetSearch);
+            }
 
         }
     }
 
-    private AppSession getSession(){
+    private AppSession getSession() {
         //return TwitterCore.getInstance().getAppSessionManager().getActiveSession();
         return appSession;
     }
@@ -150,7 +150,7 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
         public void success(Result<Search> searchResult) {
             if (null != searchResult) {
                 for (Tweet tweet : searchResult.data.tweets) {
-                    if(tweetDataSource.addOrUpdateTweet(tweet)){
+                    if (tweetDataSource.addOrUpdateTweet(tweet)) {
                         notifyTweetUpdate(tweet);
                     }
                 }
@@ -164,14 +164,15 @@ public class TwitterManager implements TweetUpdateTimer.TweetUpdateTimerListener
         }
     };
 
-    private void notifyTweetUpdate(Tweet tweet){
-        for(TweetListener tweetListener : tweetListenerList){
+    private void notifyTweetUpdate(Tweet tweet) {
+        for (TweetListener tweetListener : tweetListenerList) {
             tweetListener.onNewTweet(tweet);
         }
     }
 
     public interface LoginCallbackListener {
         void onLoginSuccess();
+
         void onLoginFailure(TwitterException ex);
     }
 

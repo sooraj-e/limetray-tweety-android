@@ -50,7 +50,9 @@ public class Bar {
         return mColor;
     }
 
-    public int getColorAlpha(){return mColorAlpha;}
+    public int getColorAlpha() {
+        return mColorAlpha;
+    }
 
     public void setColor(int color) {
         mColor = color;
@@ -102,13 +104,17 @@ public class Bar {
         return mOldValue;
     }
 
-    public void setOldValue(float oldValue) { mOldValue = oldValue; }
+    public void setOldValue(float oldValue) {
+        mOldValue = oldValue;
+    }
 
     public float getGoalValue() {
         return mGoalValue;
     }
 
-    public void setGoalValue(float goalValue) { mGoalValue = goalValue; }
+    public void setGoalValue(float goalValue) {
+        mGoalValue = goalValue;
+    }
 
     public String getValueString() {
         if (mValueString != null) {
@@ -121,16 +127,25 @@ public class Bar {
     public void setValueString(final String valueString) {
         mValueString = valueString;
     }
-    public String getValuePrefix() {return mValuePrefix;}
 
-    public void setValuePrefix(String valuePrefix) { mValuePrefix = valuePrefix; }
+    public String getValuePrefix() {
+        return mValuePrefix;
+    }
 
-    public String getValueSuffix() {return mValueSuffix;}
+    public void setValuePrefix(String valuePrefix) {
+        mValuePrefix = valuePrefix;
+    }
 
-    public void setValueSuffix(String valueSuffix) { mValueSuffix = valueSuffix; }
+    public String getValueSuffix() {
+        return mValueSuffix;
+    }
 
-    public void makeValueString(int decimalPrecision){
-        String base = String.format("%." + String.valueOf(decimalPrecision)+"f",mValue);
+    public void setValueSuffix(String valueSuffix) {
+        mValueSuffix = valueSuffix;
+    }
+
+    public void makeValueString(int decimalPrecision) {
+        String base = String.format("%." + String.valueOf(decimalPrecision) + "f", mValue);
         if (getValuePrefix() != null) base = getValuePrefix() + base;
         if (getValueSuffix() != null) base = base + getValueSuffix();
         setValueString(base);

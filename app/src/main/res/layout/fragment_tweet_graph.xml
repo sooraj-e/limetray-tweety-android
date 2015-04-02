@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -10,13 +9,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/shutterstock_137092793_lol"
-        android:scaleType="center"
-        />
+        android:scaleType="center" />
 
     <View
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/black_trans"/>
+        android:background="@color/black_trans" />
 
     <fr.castorflex.android.circularprogressbar.CircularProgressBar
         android:layout_width="42dp"
@@ -29,12 +27,11 @@
         app:cpb_sweep_speed="1.0"
         app:cpb_stroke_width="4dp"
         app:cpb_min_sweep_angle="10"
-        app:cpb_max_sweep_angle="300"
-        />
+        app:cpb_max_sweep_angle="300" />
 
     <com.echo.holographlibrary.BarGraph
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/graph"
-        android:visibility="gone"/>
+        android:visibility="gone" />
 </RelativeLayout>

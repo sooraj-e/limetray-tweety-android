@@ -13,8 +13,8 @@
     <color name="blue_semi_transparent_pressed">#80738ffe</color>
     <color name="blue_light_transparent">#185677fc</color>
 
-    <color name="actionbar_green_dark_primary" >#669900</color>
-    <color name="actionbar_green_dark_status" >#ff548700</color>
+    <color name="actionbar_green_dark_primary">#669900</color>
+    <color name="actionbar_green_dark_status">#ff548700</color>
 
     <color name="bg_holo_green_dark">#07669900</color>
     <integer-array name="pbar_colors">

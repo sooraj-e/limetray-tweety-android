@@ -67,30 +67,30 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
         List<Tweet> tweetList = twitterManager.getAllTweets();
         layoutTweets = (LinearLayout) rootView.findViewById(R.id.layoutTweets);
 
-        if(!tweetList.isEmpty()){
+        if (!tweetList.isEmpty()) {
             updateUI(tweetList);
         }
 
         return rootView;
     }
 
-    private void updateUI(List<Tweet> tweetList){
-        for(Tweet tweet : tweetList){
+    private void updateUI(List<Tweet> tweetList) {
+        for (Tweet tweet : tweetList) {
             updateUI(tweet);
         }
     }
 
-    private void updateUI(final Tweet tweet){
+    private void updateUI(final Tweet tweet) {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(null != progressBarLoading) {
+                if (null != progressBarLoading) {
                     progressBarLoading.setVisibility(View.GONE);
                 }
 
                 TweetView tweetView = new TweetView(context, tweet, R.style.tw__TweetDarkStyle);
 
-                if(null != layoutTweets){
+                if (null != layoutTweets) {
                     layoutTweets.addView(tweetView, 0);
 
                     // Empty view
@@ -100,7 +100,7 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
                     layoutTweets.addView(viewDivider, 1);
                 }
 
-                if(enableNewTweetToast){
+                if (enableNewTweetToast) {
                     Toast.makeText(context, "New Tweet By: " + tweet.user.name, Toast.LENGTH_SHORT).show();
                 }
             }
@@ -123,7 +123,7 @@ public class FragmentTweets extends android.support.v4.app.Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(null != twitterManager && null != tweetListener){
+        if (null != twitterManager && null != tweetListener) {
             twitterManager.removeTweetListener(tweetListener);
             twitterManager.closeDb();
         }

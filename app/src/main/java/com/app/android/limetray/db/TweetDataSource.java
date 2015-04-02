@@ -20,7 +20,7 @@ public class TweetDataSource {
     private MySQLiteHelper mySQLiteHelper = null;
     private String[] allColumns = {MySQLiteHelper.TableTweets.COLUMN_ID, MySQLiteHelper.TableTweets.COLUMN_TWEET_JSON};
 
-    public TweetDataSource(Context context){
+    public TweetDataSource(Context context) {
         mySQLiteHelper = new MySQLiteHelper(context);
     }
 
@@ -28,7 +28,7 @@ public class TweetDataSource {
         sqLiteDatabase = mySQLiteHelper.getWritableDatabase();
     }
 
-    public void close(){
+    public void close() {
         mySQLiteHelper.close();
     }
 
@@ -39,26 +39,26 @@ public class TweetDataSource {
 
         int updateRows = sqLiteDatabase.update(MySQLiteHelper.TableTweets.TABLE_TWEETS, values
                 , MySQLiteHelper.TableTweets.COLUMN_ID + "='" + tweet.id + "'", null);
-        if(updateRows > 0) return true;
+        if (updateRows > 0) return true;
 
         long insertId = sqLiteDatabase.insert(MySQLiteHelper.TableTweets.TABLE_TWEETS, null, values);
         return (-1 != insertId);
     }
 
-    public Tweet getTweet(long _id){
+    public Tweet getTweet(long _id) {
         Cursor cursor = sqLiteDatabase.query(MySQLiteHelper.TableTweets.TABLE_TWEETS, allColumns,
                 MySQLiteHelper.TableTweets.COLUMN_ID + " = '" + _id + "'", null, null, null, null);
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             Tweet tweet = cursorToTweet(cursor);
             return tweet;
         }
         return null;
     }
 
-    public Tweet getLastTweet(){
+    public Tweet getLastTweet() {
         Cursor cursor = sqLiteDatabase.query(MySQLiteHelper.TableTweets.TABLE_TWEETS, allColumns,
                 null, null, null, null, MySQLiteHelper.TableTweets.COLUMN_ID + " DESC", String.valueOf(1));
-        if(cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             Tweet tweet = cursorToTweet(cursor);
             return tweet;
         }

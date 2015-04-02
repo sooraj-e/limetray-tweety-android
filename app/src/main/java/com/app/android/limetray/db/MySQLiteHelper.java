@@ -12,7 +12,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
     private static final int DB_VERSION = 1;
 
     // Below is the table for list of connected controllers.
-    static interface TableTweets{
+    static interface TableTweets {
         public static final String TABLE_TWEETS = "tbl_tweets";
         public static final String COLUMN_ID = "id";
         public static final String COLUMN_TWEET_JSON = "tweet_json";
@@ -23,7 +23,7 @@ class MySQLiteHelper extends SQLiteOpenHelper {
                 + COLUMN_TWEET_JSON + " TEXT NOT NULL);";
     }
 
-    MySQLiteHelper(Context context){
+    MySQLiteHelper(Context context) {
         super(context, DB_NAME, null, DB_VERSION);
     }
 

@@ -74,13 +74,17 @@ public class PieSlice {
         return mOldValue;
     }
 
-    public void setOldValue(float oldValue) { mOldValue = oldValue; }
+    public void setOldValue(float oldValue) {
+        mOldValue = oldValue;
+    }
 
     public float getGoalValue() {
         return mGoalValue;
     }
 
-    public void setGoalValue(float goalValue) { mGoalValue = goalValue; }
+    public void setGoalValue(float goalValue) {
+        mGoalValue = goalValue;
+    }
 
     public Path getPath() {
         return mPath;

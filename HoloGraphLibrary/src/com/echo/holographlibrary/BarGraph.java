@@ -174,46 +174,44 @@ public class BarGraph extends View implements HoloGraphAnimate {
 
         int insertCount = 0;
         int deleteCount = 0;
-        for (Bar bar :mBars)
-        {
-            if (bar.mAnimateSpecial ==ANIMATE_INSERT)
+        for (Bar bar : mBars) {
+            if (bar.mAnimateSpecial == ANIMATE_INSERT)
                 insertCount++;
 
-            if (bar.mAnimateSpecial ==ANIMATE_DELETE)
+            if (bar.mAnimateSpecial == ANIMATE_DELETE)
                 deleteCount++;
         }
         int specialCount = insertCount + deleteCount;
-        float barWidthHelper = (getWidth() - (padding * 2) * (mBars.size()-insertCount)) / (mBars.size()-insertCount);
-        float insertHelper = (getWidth() - (padding * 2) * (mBars.size()-deleteCount)) / (mBars.size()-deleteCount);
+        float barWidthHelper = (getWidth() - (padding * 2) * (mBars.size() - insertCount)) / (mBars.size() - insertCount);
+        float insertHelper = (getWidth() - (padding * 2) * (mBars.size() - deleteCount)) / (mBars.size() - deleteCount);
         float specialWidthTotal = 0;
 
         int count = 0;
-        float barWidths [] = new float[mBars.size()];
+        float barWidths[] = new float[mBars.size()];
         for (final Bar bar : mBars) {   //calculate total widths of bars being inserted/deleted
             if (bar.mAnimateSpecial == ANIMATE_INSERT) {
-                barWidths[count] =  (int) (getAnimatedFractionSafe() * insertHelper);
-                specialWidthTotal +=  barWidths[count];
+                barWidths[count] = (int) (getAnimatedFractionSafe() * insertHelper);
+                specialWidthTotal += barWidths[count];
 
-            }
-            else if (bar.mAnimateSpecial == ANIMATE_DELETE){
-                barWidths[count]  = (int) ( (1-getAnimatedFractionSafe()) * barWidthHelper);
-                specialWidthTotal +=  barWidths[count];
+            } else if (bar.mAnimateSpecial == ANIMATE_DELETE) {
+                barWidths[count] = (int) ((1 - getAnimatedFractionSafe()) * barWidthHelper);
+                specialWidthTotal += barWidths[count];
             }
             count++;
         }
-        specialWidthTotal += (deleteCount * (padding *2 *(1-getAnimationFraction())));
-        specialWidthTotal += (insertCount * (padding *2 *getAnimationFraction()));
+        specialWidthTotal += (deleteCount * (padding * 2 * (1 - getAnimationFraction())));
+        specialWidthTotal += (insertCount * (padding * 2 * getAnimationFraction()));
         int normalCount = mBars.size() - specialCount;
         //calculate the width of the exsisting normal bars
-        float barWidth = (getWidth() - specialWidthTotal - (padding * 2 *normalCount)) / (normalCount);//calculate regular widths
+        float barWidth = (getWidth() - specialWidthTotal - (padding * 2 * normalCount)) / (normalCount);//calculate regular widths
         float defaultBarWidth = barWidth;
-        for (int i = 0; i <mBars.size(); i++) if (mBars.get(i).mAnimateSpecial == ANIMATE_NORMAL) barWidths[i] = defaultBarWidth;
+        for (int i = 0; i < mBars.size(); i++)
+            if (mBars.get(i).mAnimateSpecial == ANIMATE_NORMAL) barWidths[i] = defaultBarWidth;
 
         //if animating, the max value is calculated for us
-        if (isAnimating()){
+        if (isAnimating()) {
             maxValue = mMaxValue;
-        }
-        else {
+        } else {
             for (final Bar bar : mBars) {
                 if (bar.getValue() > maxValue) {
                     maxValue = bar.getValue();
@@ -232,14 +230,14 @@ public class BarGraph extends View implements HoloGraphAnimate {
         for (final Bar bar : mBars) {
             int left = (int) ((padding * 2) * count + padding + barWidth * count);
             int right = (int) ((padding * 2) * count + padding + barWidth * (count + 1));
-            int width = (int)(defaultBarWidth + (padding *2));
+            int width = (int) (defaultBarWidth + (padding * 2));
             float textWidth = mPaint.measureText(bar.getName());
             // Decrease text size to fit and not overlap with other labels.
-            while (right -left + (padding * LABEL_PADDING_MULTIPLIER) < textWidth) {
+            while (right - left + (padding * LABEL_PADDING_MULTIPLIER) < textWidth) {
                 mPaint.setTextSize(mPaint.getTextSize() - 1);
                 float newTextWidth = mPaint.measureText(bar.getName());
                 if (textWidth == newTextWidth) break;
-                textWidth =newTextWidth;
+                textWidth = newTextWidth;
             }
             count++;
         }
@@ -247,39 +245,36 @@ public class BarGraph extends View implements HoloGraphAnimate {
         float labelTextSize = mPaint.getTextSize();
 
         count = 0;
-        int oldright = (int) (padding *-1);
+        int oldright = (int) (padding * -1);
         int alpha = 255;//for bar color. Max values is bar.getColorAlpha
         int popupAlpha = 255;// for bar popup and text. Max value is 255;
         SparseArray<Float> valueTextSizes = new SparseArray<Float>();
         for (final Bar bar : mBars) {
             //Set alpha and width percentage if inserting or deleting
-            if (isAnimating()){
+            if (isAnimating()) {
                 if (bar.mAnimateSpecial == ANIMATE_INSERT) {
                     alpha = ((int) (getAnimatedFractionSafe() * bar.getColorAlpha()));
                     popupAlpha = ((int) (getAnimatedFractionSafe() * 255));
-                }
-                else if (bar.mAnimateSpecial == ANIMATE_DELETE){
+                } else if (bar.mAnimateSpecial == ANIMATE_DELETE) {
                     alpha = ((int) ((1 - getAnimatedFractionSafe()) * bar.getColorAlpha()));
-                    popupAlpha = ((int) ((1- getAnimatedFractionSafe()) * 255));
-            }
-                else {
+                    popupAlpha = ((int) ((1 - getAnimatedFractionSafe()) * 255));
+                } else {
                     alpha = bar.getColorAlpha();
                     popupAlpha = 255;
                 }
-            }
-            else {
+            } else {
                 mPaint.setAlpha(bar.getColorAlpha());
                 popupAlpha = 255;
             }
             barWidth = barWidths[count];
             // Set bar bounds
             int left = (int) (oldright + (padding * 2 *
-                    (bar.mAnimateSpecial ==ANIMATE_DELETE ? 1-getAnimationFraction()://scale padding by animation time same as bar width
-                    bar.mAnimateSpecial == ANIMATE_INSERT ? getAnimationFraction()
-                    :1)));
+                    (bar.mAnimateSpecial == ANIMATE_DELETE ? 1 - getAnimationFraction() ://scale padding by animation time same as bar width
+                            bar.mAnimateSpecial == ANIMATE_INSERT ? getAnimationFraction()
+                                    : 1)));
             int top = (int) (getHeight() - bottomPadding
                     - (usableHeight * (bar.getValue() / maxValue)));
-            int right = (int) (left + barWidth );
+            int right = (int) (left + barWidth);
             int bottom = (int) (getHeight() - bottomPadding);
             oldright = right;
             mBoundsRect.set(left, top, right, bottom);
@@ -361,10 +356,10 @@ public class BarGraph extends View implements HoloGraphAnimate {
                         mPaint.setTextSize(valueTextSizes.get(bar.getValueString().length()));
                     }
                 }   //for bars inserting/deleting, do the math everytime without a cache.
-                    else
-                        while (mPaint.measureText(bar.getValueString()) > boundRight - boundLeft) {
-                            mPaint.setTextSize(mPaint.getTextSize() - (float) 1);
-                }
+                else
+                    while (mPaint.measureText(bar.getValueString()) > boundRight - boundLeft) {
+                        mPaint.setTextSize(mPaint.getTextSize() - (float) 1);
+                    }
 
 
                 if (isAnimating()) mPaint.setAlpha(popupAlpha);
@@ -430,7 +425,9 @@ public class BarGraph extends View implements HoloGraphAnimate {
     }
 
     @Override
-    public void setDuration(int duration) {mDuration = duration;}
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
 
     @Override
     public Interpolator getInterpolator() {
@@ -440,42 +437,52 @@ public class BarGraph extends View implements HoloGraphAnimate {
     /**
      * Make sure your interpolator ends at exactly 1.0 (Bounce interpolator doesnt)
      * or else call makeValueString(int precision) on each bar in onAnimationEnd  so the value label will be the goal value.
+     *
      * @param interpolator
      */
     @Override
-    public void setInterpolator(Interpolator interpolator) {mInterpolator = interpolator;}
+    public void setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
+    }
 
     public int getmValueStringPrecision() {
         return mValueStringPrecision;
     }
 
-    public void setValueStringPrecision(int valueStringPrecision) {mValueStringPrecision = valueStringPrecision;}
+    public void setValueStringPrecision(int valueStringPrecision) {
+        mValueStringPrecision = valueStringPrecision;
+    }
 
     public long getValueStringUpdateInterval() {
         return mValueStringUpdateInterval;
     }
 
-    public void setValueStringUpdateInterval(long valueStringUpdateInterval) {mValueStringUpdateInterval = valueStringUpdateInterval;}
+    public void setValueStringUpdateInterval(long valueStringUpdateInterval) {
+        mValueStringUpdateInterval = valueStringUpdateInterval;
+    }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public boolean isAnimating() {
-        if(mValueAnimator != null)
+        if (mValueAnimator != null)
             return mValueAnimator.isRunning();
         return false;
     }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
-    private float getAnimationFraction(){
+    private float getAnimationFraction() {
         if (mValueAnimator != null && isAnimating())
             return mValueAnimator.getAnimatedFraction();
         else return 1f;
     }
-    private float getAnimatedFractionSafe(){
+
+    private float getAnimatedFractionSafe() {
         float f = getAnimationFraction();
-        if (f >1) return 1;
+        if (f > 1) return 1;
         if (f < 0) return 0;
         else return f;
     }
+
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public boolean cancelAnimating() {
@@ -490,7 +497,7 @@ public class BarGraph extends View implements HoloGraphAnimate {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void animateToGoalValues() {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1){
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
             Log.e("HoloGraphLibrary compatibility error", "Animation not supported on api level 11 and below. Returning without animating.");
             return;
         }
@@ -505,7 +512,7 @@ public class BarGraph extends View implements HoloGraphAnimate {
             mGoalMaxValue = Math.max(mGoalMaxValue, b.getGoalValue());
         }
         mMaxValue = mOldMaxValue;
-        ValueAnimator va = ValueAnimator.ofFloat(0,1);
+        ValueAnimator va = ValueAnimator.ofFloat(0, 1);
         mValueAnimator = va;
         va.setDuration(getDuration());
         if (mInterpolator == null) mInterpolator = new LinearInterpolator();
@@ -526,18 +533,17 @@ public class BarGraph extends View implements HoloGraphAnimate {
                 }
                 long now = System.currentTimeMillis();
                 //change value string after interval or when animation is at end point.
-                if ((mLastTimeValueStringsUpdated + mValueStringUpdateInterval < now) || f==1f)
-                {
+                if ((mLastTimeValueStringsUpdated + mValueStringUpdateInterval < now) || f == 1f) {
                     for (Bar b : mBars)
                         b.makeValueString(mValueStringPrecision);
                     mLastTimeValueStringsUpdated = now;
                 }
                 postInvalidate();
-            }});
+            }
+        });
         va.start();
 
     }
-
 
 
     @Override

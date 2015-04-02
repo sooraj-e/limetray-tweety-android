@@ -31,10 +31,7 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
     private Context context = null;
     private TwitterManager twitterManager = null;
     private ProgressBar progressBarLoading = null;
-    //private LineGraph lineGraphTweets = null;
     private BarGraph barGraph = null;
-    private List<Tweet> tweetList = null;
-    //private List<String> tweetDateList = null;
     private List<GraphCoords> graphCoordsList = null;
 
     private TwitterManager.TweetListener tweetListener = new TwitterManager.TweetListener() {
@@ -56,13 +53,12 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {}
+        if (getArguments() != null) {
+        }
 
         twitterManager = TwitterManager.getInstance(this.context);
         twitterManager.addTweetListener(tweetListener);
 
-        tweetList = new ArrayList<>();
-        //tweetDateList = new ArrayList<>();
         graphCoordsList = new ArrayList<>();
 
     }
@@ -74,72 +70,64 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
 
         progressBarLoading = (ProgressBar) rootView.findViewById(R.id.pbarLoading);
         barGraph = (BarGraph) rootView.findViewById(R.id.graph);
-        //barGraph.setuni
 
-        tweetList = twitterManager.getAllTweets();
+        List<Tweet> tweetList = twitterManager.getAllTweets();
 
-        if(!tweetList.isEmpty()){
+        if (!tweetList.isEmpty()) {
             updateGraph(tweetList);
         }
 
         return rootView;
     }
 
-    private void updateGraph(List<Tweet> tweetList){
-        for(Tweet tweet : tweetList){
+    private void updateGraph(List<Tweet> tweetList) {
+        for (Tweet tweet : tweetList) {
             updateGraph(tweet);
         }
     }
 
-    private void updateGraph(final Tweet tweet){
+    private void updateGraph(final Tweet tweet) {
         String createdAt = tweet.createdAt; //Thu Mar 26 16:01:14 +0000 2015
         DateFormat dateFormat = new SimpleDateFormat("EEE MMM dd HH:mm:ss Z yyyy", Locale.US); // The mask
 
-        try{
+        try {
             Date date = dateFormat.parse(createdAt); // parsing the String into a Date using the mask
             Calendar calendar = Calendar.getInstance();
-            calendar .setTime(date);
+            calendar.setTime(date);
             createdAt = calendar.get(Calendar.DATE) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR);
-        }catch (Exception ex){
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
         GraphCoords graphCoords = new GraphCoords();
-        for(GraphCoords graphCoordExists : graphCoordsList){
-            if(createdAt.equalsIgnoreCase(graphCoordExists.getCreatedAt())){
-                // updateY
+        for (GraphCoords graphCoordExists : graphCoordsList) {
+            if (createdAt.equalsIgnoreCase(graphCoordExists.getCreatedAt())) {
                 graphCoordExists.setY(graphCoordExists.getY() + 1);
                 graphCoords = graphCoordExists;
             }
         }
 
-        if(null == graphCoords.getCreatedAt()){
+        if (null == graphCoords.getCreatedAt()) {
             graphCoords.setCreatedAt(createdAt);
-            if(!graphCoordsList.isEmpty()) {                //graphCoords.setX(graphCoordsList.get(graphCoordsList.size() - 1).getX() + 2);
-
-            }
             graphCoords.setY(graphCoords.getY() + 1);
             graphCoordsList.add(graphCoords);
         }
 
-
-
         updateUI();
-
     }
 
-    private void updateUI(){
+    private void updateUI() {
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 barGraph.setVisibility(View.VISIBLE);
 
-                if(null != progressBarLoading) {
+                if (null != progressBarLoading) {
                     progressBarLoading.setVisibility(View.GONE);
                 }
 
                 ArrayList<Bar> barList = new ArrayList<Bar>();
-                for(GraphCoords graphCoords : graphCoordsList){
+                for (GraphCoords graphCoords : graphCoordsList) {
                     Bar bar = new Bar();
                     bar.setColor(Color.parseColor("#99CC00"));
                     bar.setName(graphCoords.createdAt);
@@ -148,8 +136,6 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
                 }
 
                 barGraph.setBars(barList);
-
-
             }
         });
     }
@@ -164,18 +150,18 @@ public class FragmentTweetGraph extends android.support.v4.app.Fragment {
     @Override
     public void onDetach() {
         super.onDetach();
-        if(null != twitterManager && null != tweetListener){
+        if (null != twitterManager && null != tweetListener) {
             twitterManager.removeTweetListener(tweetListener);
         }
     }
 
 
-    class GraphCoords implements Serializable{
+    class GraphCoords implements Serializable {
         private String createdAt = null;
         private int x;
         private int y;
 
-        GraphCoords(){
+        GraphCoords() {
             this(null, 0, 0);
         }
 

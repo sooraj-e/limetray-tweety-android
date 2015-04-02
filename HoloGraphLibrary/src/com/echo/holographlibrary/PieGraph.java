@@ -46,7 +46,7 @@ import android.view.animation.LinearInterpolator;
 
 import java.util.ArrayList;
 
-public class PieGraph extends View implements  HoloGraphAnimate {
+public class PieGraph extends View implements HoloGraphAnimate {
 
     private int mPadding;
     private int mInnerCircleRatio;
@@ -57,9 +57,8 @@ public class PieGraph extends View implements  HoloGraphAnimate {
     private boolean mDrawCompleted = false;
     private RectF mRectF = new RectF();
     private Bitmap mBackgroundImage = null;
-    private Point mBackgroundImageAnchor = new Point(0,0);
+    private Point mBackgroundImageAnchor = new Point(0, 0);
     private boolean mBackgroundImageCenter = false;
-
 
 
     private int mDuration = 300;//in ms
@@ -90,8 +89,8 @@ public class PieGraph extends View implements  HoloGraphAnimate {
         mPaint.reset();
         mPaint.setAntiAlias(true);
 
-        if(mBackgroundImage != null) {
-            if(mBackgroundImageCenter)
+        if (mBackgroundImage != null) {
+            if (mBackgroundImageCenter)
                 mBackgroundImageAnchor.set(
                         getWidth() / 2 - mBackgroundImage.getWidth() / 2,
                         getHeight() / 2 - mBackgroundImage.getHeight() / 2
@@ -194,7 +193,7 @@ public class PieGraph extends View implements  HoloGraphAnimate {
             }
         }
         // Case we click somewhere else, also get feedback!
-        if(MotionEvent.ACTION_UP == event.getAction()
+        if (MotionEvent.ACTION_UP == event.getAction()
                 && mSelectedIndex == -1
                 && mListener != null) {
             mListener.onClick(mSelectedIndex);
@@ -226,6 +225,7 @@ public class PieGraph extends View implements  HoloGraphAnimate {
 
     /**
      * sets padding
+     *
      * @param padding
      */
     public void setPadding(int padding) {
@@ -271,7 +271,9 @@ public class PieGraph extends View implements  HoloGraphAnimate {
     }
 
     @Override
-    public void setDuration(int duration) {mDuration = duration;}
+    public void setDuration(int duration) {
+        mDuration = duration;
+    }
 
     @Override
     public Interpolator getInterpolator() {
@@ -279,13 +281,15 @@ public class PieGraph extends View implements  HoloGraphAnimate {
     }
 
     @Override
-    public void setInterpolator(Interpolator interpolator) {mInterpolator = interpolator;}
+    public void setInterpolator(Interpolator interpolator) {
+        mInterpolator = interpolator;
+    }
 
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public boolean isAnimating() {
-        if(mValueAnimator != null)
+        if (mValueAnimator != null)
             return mValueAnimator.isRunning();
         return false;
     }
@@ -307,7 +311,7 @@ public class PieGraph extends View implements  HoloGraphAnimate {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
     @Override
     public void animateToGoalValues() {
-        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1){
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
             Log.e("HoloGraphLibrary compatibility error", "Animation not supported on api level 12 and below. Returning without animating.");
             return;
         }
@@ -316,7 +320,7 @@ public class PieGraph extends View implements  HoloGraphAnimate {
 
         for (PieSlice s : mSlices)
             s.setOldValue(s.getValue());
-        ValueAnimator va = ValueAnimator.ofFloat(0,1);
+        ValueAnimator va = ValueAnimator.ofFloat(0, 1);
         mValueAnimator = va;
         va.setDuration(getDuration());
         if (mInterpolator == null) mInterpolator = new LinearInterpolator();
@@ -326,21 +330,23 @@ public class PieGraph extends View implements  HoloGraphAnimate {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
                 float f = Math.max(animation.getAnimatedFraction(), 0.01f);//avoid blank frames; never multiply values by 0
-               // Log.d("f", String.valueOf(f));
+                // Log.d("f", String.valueOf(f));
                 for (PieSlice s : mSlices) {
                     float x = s.getGoalValue() - s.getOldValue();
                     s.setValue(s.getOldValue() + (x * f));
                 }
                 postInvalidate();
-            }});
-            va.start();
+            }
+        });
+        va.start();
 
-        }
-
+    }
 
 
     @Override
-    public void setAnimationListener(Animator.AnimatorListener animationListener) { mAnimationListener = animationListener;}
+    public void setAnimationListener(Animator.AnimatorListener animationListener) {
+        mAnimationListener = animationListener;
+    }
 
     public interface OnSliceClickedListener {
         public abstract void onClick(int index);

@@ -30,11 +30,11 @@ class TweetUpdateTimer {
         timer.schedule(timerTask, timerStart, timerInterval); //
     }
 
-    void setTimerStartTime(long timerStart){
+    void setTimerStartTime(long timerStart) {
         this.timerStart = timerStart;
     }
 
-    void setTimerInterval(long timerInterval){
+    void setTimerInterval(long timerInterval) {
         this.timerInterval = timerInterval;
     }
 

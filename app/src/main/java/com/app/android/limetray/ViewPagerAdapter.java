@@ -14,7 +14,7 @@ import com.app.android.limetray.fragments.FragmentTweets;
 public class ViewPagerAdapter extends FragmentPagerAdapter {
 
     // Tab Titles
-    private String tabTitles[] = new String[] { "TWEETS", "TWEET PLOT" };
+    private String tabTitles[] = new String[]{"TWEETS", "TWEET PLOT"};
 
     // Declare the number of ViewPager pages
     private final int PAGE_COUNT = 2;
