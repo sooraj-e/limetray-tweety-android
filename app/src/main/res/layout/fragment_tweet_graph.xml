@@ -32,15 +32,9 @@
         app:cpb_max_sweep_angle="300"
         />
 
-    <com.echo.holographlibrary.LineGraph
+    <com.echo.holographlibrary.BarGraph
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/graphTweets"
-        app:lineStrokeColor="@color/transparent_orange"
-        app:lineAxisColor="@color/transparent_blue"
-        app:lineStrokeWidth="1dip"
-        app:lineStrokeSpacing="10dip"
-        app:lineUseDip="true"
-        android:visibility="gone"
-        />
+        android:id="@+id/graph"
+        android:visibility="gone"/>
 </RelativeLayout>
