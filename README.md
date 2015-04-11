@@ -4,8 +4,7 @@ This is an Android application to fetch tweets containing string "limetray".
 
 #::::::: TASK ::::::::
 
-Write An Android App to show the graph of 'limetray' mention in Twitter.
-
+=
 Requirements :
 
 1. App Should connect with Twitter search API and get all tweets mentioning the word 'limetray' in it.
@@ -19,9 +18,3 @@ Implementation :
 2. Use any 3rd party graph libraries for plotting graph
 Bonus: Use of any 3rd party REST Clients for API calls.
 
-We'll be evaluating your coding style, ability to learn, rapid feature implementation and overall execution process.
-
-Use git for development purpose and send across your implementation as a git repository link.
-
-# START TIME: 1 April 2015, 6:10 PM 
-# END TIME :  2 April 2015, 5:14 PM
